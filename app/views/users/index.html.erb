@@ -1,0 +1,21 @@
+
+<h1>スケジュール管理</h1>
+
+<div class="mb-2">
+  <%= link_to "« 前の月", users_path(start_date: (@start_date - 1.month).beginning_of_month.to_date) %>
+  <strong style="margin:0 8px;"><%= @start_date.strftime("%Y年 %-m月") %></strong>
+  <%= link_to "次の月 »", users_path(start_date: (@start_date + 1.month).beginning_of_month.to_date) %>
+  <%= link_to "今月", users_path(start_date: Time.zone.today.beginning_of_month.to_date) %>
+</div>
+
+<%= month_calendar events: @tasks, attribute: :start_at do |date, day_tasks| %>
+  <div><strong><%= date.day %></strong></div>
+  <% day_tasks.each do |task| %>
+    <div>
+      <%= task.task_name %>
+      <% if task.end_at.present? %>
+        (<%= task.start_at&.strftime("%H:%M") %>–<%= task.end_at.strftime("%H:%M") %>)
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
